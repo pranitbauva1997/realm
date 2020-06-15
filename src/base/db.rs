@@ -4,11 +4,12 @@ use colored::Colorize;
 #[cfg(debug_assertions)]
 lazy_static! {
     pub static ref SS: syntect::parsing::SyntaxSet =
-        { syntect::parsing::SyntaxSet::load_defaults_newlines() };
+        syntect::parsing::SyntaxSet::load_defaults_newlines();
     pub static ref TS: syntect::highlighting::ThemeSet =
-        { syntect::highlighting::ThemeSet::load_defaults() };
+        syntect::highlighting::ThemeSet::load_defaults();
 }
 
+#[cfg(feature = "sqlite")]
 #[cfg(debug_assertions)]
 pub fn colored(sql: &str) -> String {
     let syntax = SS.find_syntax_by_extension("sql").unwrap();
@@ -17,6 +18,7 @@ pub fn colored(sql: &str) -> String {
     syntect::util::as_24_bit_terminal_escaped(&ranges[..], false) + "\x1b[0m"
 }
 
+#[allow(dead_code)]
 pub fn red<T>(err_str: &str, err: T)
 where
     T: std::fmt::Display,
